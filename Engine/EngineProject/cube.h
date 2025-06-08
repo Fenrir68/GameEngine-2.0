@@ -1,0 +1,77 @@
+#pragma once
+#include"cstdlib"
+#include"glad/glad.h"
+#include"GLFW/glfw3.h"
+#include"glm/glm.hpp"
+#include"glm/gtc/matrix_transform.hpp"
+#include"glm/gtc/type_ptr.hpp"
+
+#include"VAO.h"
+#include"VBO.h"
+#include"EBO.h"
+#include"textureClass.h"
+#include"shaderClass.h"
+
+class cube {
+public:
+	VAO vao;
+
+	GLfloat vertices[70]= 
+	{
+		-0.5f, 0.5f, 0.5f,		0.0f, 1.0f,		//A
+		0.5f, 0.5f, 0.5f,		0.25f, 1.0f,	//B
+		-0.5f, -0.5f, 0.5f,		0.0f, 0.67f,	//C
+		0.5f, -0.5f, 0.5f,		0.25f, 0.67f,	//D
+		0.5f, 0.5f, 0.5f,		0.5f, 0.67f,	//E
+		-0.5f, 0.5f, 0.5f,		0.75f, 0.67f,	//F
+		-0.5f, -0.5f, 0.5f,		1.0f, 0.67f,	//G
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.33f,	//H
+		0.5f, -0.5f, -0.5f,		0.25f, 0.33f,	//I
+		0.5f, 0.5f, -0.5f,		0.5f, 0.33f,	//J
+		-0.5f, 0.5f, -0.5f,		0.75f, 0.33f,	//K
+		-0.5f, -0.5f, -0.5f,	1.0f, 0.33f,	//L
+		0.5f, 0.5f, -0.5f,		0.75f, 0.0f,	//M
+		0.5f, -0.5f, -0.5f,		1.0f, 0.0f		//N
+	};
+	VBO vbo = VBO(0, 0);
+
+	GLuint indices[36] =
+	{
+		0,1,2,
+		1,2,3,
+
+		2,3,7,
+		3,7,8,
+
+		3,4,8,
+		4,8,9,
+
+		4,5,9,
+		5,9,10,
+
+		5,6,10,
+		6,10,11,
+
+		10,11,12,
+		11,12,13
+	};
+	EBO ebo = EBO(indices, sizeof(indices));
+
+	float side;
+
+	glm::vec3 Position;
+
+	Shader* shader;
+
+	Texture* tex;
+
+	glm::mat4 model = glm::mat4(1.0f);
+
+	cube(float side, glm::vec3 Position, Texture* texPtr, Shader* shader);
+
+	void Rotate(float angle, glm::vec3 axe);
+	void Translate(glm::vec3 vector);
+	void goTo(glm::vec3 newPos);
+	void Draw();
+	void Delete();
+};

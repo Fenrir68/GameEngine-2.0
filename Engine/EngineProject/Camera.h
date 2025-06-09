@@ -12,25 +12,32 @@
 class Camera {
 public:
 	glm::vec3 Position;
+	float speed = 0.1f;
+
 	glm::vec3 Orientation = glm::vec3(0.0f, 0.0f, -1.0f);
+	float sensitivity = 1.0f;
+
 	glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
 
+	float FOV;
+	float zsens = 5.0f;
+
 	int windowWidth, windowHeight;
+	float ratioW_H;
+
+	float nearPlane, farPlane;
 
 	glm::mat4 proj = glm::mat4(1.0f);
 	glm::mat4 view = glm::mat4(1.0f);
 	Shader* shaderPtr;
 
-	float speed = 0.05f;
-	float sensitivity = 1.0f;
-
 	bool firstClick = true;
 	double mouseX, mouseY;
+	float angle_limit = 5.0f;
 
-	Camera(int width, int height, glm::vec3 position, Shader* shader);
+	Camera(int width, int height, glm::vec3 position, float baseFOV, float nearplane, float farplane, Shader* shader);
 
-	void Matrix(float FOVdeg, float nearPlane, float farPlane, Shader& shader, const char* uniform);
-	void MAJviewMat();
+	void Matrix();
 	void BindMatCam();
 	void Inputs(GLFWwindow* window);
 };

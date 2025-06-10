@@ -9,7 +9,7 @@
 
 std::string get_file_contents(const char* filename);
 
-class Shader {
+class Shader{
 public:
 	GLint ID;
 	Shader(const char* vertexShader, const char* fragShader);

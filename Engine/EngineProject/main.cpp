@@ -1,4 +1,5 @@
 #include <iostream>
+#include <map>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include"stb/stb_image.h"
@@ -13,6 +14,8 @@
 #include"VBO.h"
 #include"EBO.h"
 #include"cube.h"
+
+//TODO ça serait cool de regrouper les class shader, texture et cube ensemble pour pouvoir toutes les supprimer d'un coup (supprimer la duplication de code à la fin)
 
 int main() {
 	glfwInit();
@@ -39,16 +42,22 @@ int main() {
 	//bottom left -> top right
 	glViewport(0, 0, windowWidth, windowHeight);
 
-	Shader shaderProg = Shader("default.vert", "default.frag");
+	std::map<int, Shader*> shaderProgs;
+	shaderProgs[0] = new Shader("default.vert", "default.frag");
 
-	Camera camera = Camera(windowWidth, windowHeight, glm::vec3(0.0f, 0.0f, 2.5f), 45.0f, 0.1f, 20.0f, &shaderProg);
+	Camera camera = Camera(windowWidth, windowHeight, glm::vec3(0.0f, 0.0f, 2.5f), 45.0f, 0.1f, 20.0f, shaderProgs[0]);
 	camera.Matrix();
 
-	Texture briqueTex = Texture("brique.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-	Texture defaultTex = Texture("cube_tex.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+	std::map<int, Texture*> textures;
+	textures[0] = new Texture("brique.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+	textures[1] = new Texture("cube_tex.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
 
-	cube cub0 = cube(0.5f, glm::vec3(0.0f, 0.0f, 0.0f) , &briqueTex, &shaderProg);
-	cube cub1 = cube(0.5f, glm::vec3(0.5f, 0.5f, 0.5f), &defaultTex, &shaderProg);
+	std::map<int, cube*> cubes;
+	cubes[0] = new cube(1.0f, glm::vec3(0.0f, 0.0f, 0.0f), textures[1], shaderProgs[0]);
+	cubes[1] = new cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), textures[1], shaderProgs[0]);
+	cubes[2] = new cube(1.0f, glm::vec3(0.0f, 1.0f, 0.0f), textures[1], shaderProgs[0]);
+	cubes[3] = new cube(1.0f, glm::vec3(0.0f, 0.0f, 1.0f), textures[1], shaderProgs[0]);
+
 
 	//glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -74,19 +83,37 @@ int main() {
 
 		camera.Inputs(window);
 
-		cub0.Draw();
-		cub1.Draw();
+		std::map<int, cube*>::iterator it;
+		for (it = cubes.begin(); it != cubes.end(); it++) {
+			(*(it->second)).Draw();
+		}
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
 		glfwPollEvents();
 	};
-	cub0.Delete();
-	cub1.Delete();
-	briqueTex.Delete();
-	defaultTex.Delete();
-	shaderProg.Delete();
+
+	std::map<int, cube*>::iterator itc;
+	std::cout << "cubes deleting...." << std::endl;
+	for (itc = cubes.begin(); itc != cubes.end(); itc++) {
+		std::cout << itc->first << std::endl;
+		(*(itc->second)).Delete();
+	}
+
+	std::map<int, Texture*>::iterator itt;
+	std::cout << "textures deleting...." << std::endl;
+	for (itt = textures.begin(); itt != textures.end(); itt++) {
+		std::cout << itt->first << std::endl;
+		(*(itt->second)).Delete();
+	}
+
+	std::map<int, Shader*>::iterator its;
+	std::cout << "shaders deleting...." << std::endl;
+	for (its = shaderProgs.begin(); its != shaderProgs.end(); its++) {
+		std::cout << its->first << std::endl;
+		(*(its->second)).Delete();
+	}
 
 	glfwTerminate();
 	return 0;

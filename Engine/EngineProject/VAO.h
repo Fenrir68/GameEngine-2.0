@@ -1,7 +1,7 @@
 #pragma once
 #include"VBO.h"
 
-class VAO {
+class VAO{
 public:
 	GLuint ID;
 	VAO();

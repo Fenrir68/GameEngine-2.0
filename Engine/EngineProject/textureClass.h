@@ -3,7 +3,7 @@
 #include"stb/stb_image.h"
 #include"shaderClass.h"
 
-class Texture {
+class Texture{
 public:
 	GLuint ID;
 	GLenum type;

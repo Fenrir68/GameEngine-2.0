@@ -11,8 +11,9 @@
 #include"EBO.h"
 #include"textureClass.h"
 #include"shaderClass.h"
+#include"test.h"
 
-class cube{
+class cube: public test{
 public:
 	VAO vao;
 
@@ -76,5 +77,5 @@ public:
 	void Translate(glm::vec3 vector);
 	void goTo(glm::vec3 newPos);
 	void Draw();
-	void Delete();
+	void Delete() override;
 };

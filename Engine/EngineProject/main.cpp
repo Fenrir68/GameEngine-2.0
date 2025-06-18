@@ -14,16 +14,16 @@
 #include"VBO.h"
 #include"EBO.h"
 #include"cube.h"
-#include"test.h"
+#include"defaultObject.h"
 
 #define SHADER_CODE 000
 #define TEXTURE_CODE 100
 #define CUBE_CODE 200
 
 
-void add_element(std::map<int, test*>* dict, test* element, int type) {
+void add_element(std::map<int, defaultObject*>* dict, defaultObject* element, int type) {
 	int n = 0;
-	std::map<int, test*>::iterator it;
+	std::map<int, defaultObject*>::iterator it;
 	for (it = dict->find(type); it != dict->end(); it++) {
 		if (it->first > type + 99) { return; }
 		n++;
@@ -56,7 +56,7 @@ int main() {
 	//bottom left -> top right
 	glViewport(0, 0, windowWidth, windowHeight);
 
-	std::map<int, test*> all; //000->099 = shader // 100->199 = textures // 200->299 = cube
+	std::map<int, defaultObject*> all; //000->099 = shader // 100->199 = textures // 200->299 = cube
 
 	add_element(&all, new Shader("default.vert", "default.frag"), SHADER_CODE);
 
@@ -92,7 +92,7 @@ int main() {
 
 		camera.Inputs(window);
 
-		std::map<int, test*>::iterator it0;
+		std::map<int, defaultObject*>::iterator it0;
 		for (it0 = all.find(200); it0 != all.end(); it0++) {
 			if (it0->first > 299) { break; }
 			((cube*)(it0->second))->Draw();
@@ -104,7 +104,7 @@ int main() {
 		glfwPollEvents();
 	};
 
-	std::map<int, test*>::iterator it;
+	std::map<int, defaultObject*>::iterator it;
 	for (it = all.begin(); it != all.end(); it++) {
 		it->second->Delete();
 	}

@@ -2,9 +2,9 @@
 #include"glad/glad.h"
 #include"stb/stb_image.h"
 #include"shaderClass.h"
-#include"test.h"
+#include"defaultObject.h"
 
-class Texture: public test{
+class Texture: public defaultObject {
 public:
 	GLuint ID;
 	GLenum type;

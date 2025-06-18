@@ -6,11 +6,11 @@
 #include<sstream>
 #include<iostream>
 #include<cerrno>
-#include"test.h"
+#include"defaultObject.h"
 
 std::string get_file_contents(const char* filename);
 
-class Shader: public test{
+class Shader: public defaultObject {
 public:
 	GLint ID;
 	Shader(const char* vertexShader, const char* fragShader);

@@ -1,6 +1,6 @@
 #pragma once
 
-class test {
+class defaultObject {
 public:
 	virtual void Delete();
 };

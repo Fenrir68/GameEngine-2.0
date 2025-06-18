@@ -11,9 +11,9 @@
 #include"EBO.h"
 #include"textureClass.h"
 #include"shaderClass.h"
-#include"test.h"
+#include"defaultObject.h"
 
-class cube: public test{
+class cube: public defaultObject {
 public:
 	VAO vao;
 

@@ -58,17 +58,21 @@ int main() {
 
 	std::map<int, defaultObject*> all; //000->099 = shader // 100->199 = textures // 200->299 = cube
 
-	add_element(&all, new Shader("default.vert", "default.frag"), SHADER_CODE);
+	add_element(&all, new Shader("texture.vert", "texture.frag"), SHADER_CODE);
+	add_element(&all, new Shader("color.vert", "color.frag"), SHADER_CODE);
 
 	add_element(&all, new Texture("brique.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_CODE);
 	add_element(&all, new Texture("cube_tex.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_CODE);
 
-	add_element(&all, new cube(1.0f, glm::vec3(0.0f, 0.0f, 0.0f), (Texture*)all[101], (Shader*)all[000]), CUBE_CODE);
-	add_element(&all, new cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), (Texture*)all[101], (Shader*)all[000]), CUBE_CODE);
-	add_element(&all, new cube(1.0f, glm::vec3(0.0f, 1.0f, 0.0f), (Texture*)all[101], (Shader*)all[000]), CUBE_CODE);
-	add_element(&all, new cube(1.0f, glm::vec3(0.0f, 0.0f, 1.0f), (Texture*)all[101], (Shader*)all[000]), CUBE_CODE);
+	add_element(&all, new cube(1.0f, glm::vec3(0.0f, 0.0f, 0.0f), (Texture*)all[TEXTURE_CODE+1], (Shader*)all[SHADER_CODE]), CUBE_CODE);
+	add_element(&all, new cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), (Shader*)all[SHADER_CODE+1]), CUBE_CODE);
 
-	Camera camera = Camera(windowWidth, windowHeight, glm::vec3(0.0f, 0.0f, 2.5f), 45.0f, 0.1f, 20.0f, (Shader*)all[000]);
+	std::map<int, defaultObject*>::iterator it;
+	for (it = all.begin(); it != all.end(); it++) {
+		std::cout << it->first << std::endl;
+	}
+
+	Camera camera = Camera(windowWidth, windowHeight, glm::vec3(0.0f, 0.0f, 2.5f), 45.0f, 0.1f, 20.0f, (Shader*)all[SHADER_CODE]);
 	camera.Matrix();
 
 	//glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -104,7 +108,6 @@ int main() {
 		glfwPollEvents();
 	};
 
-	std::map<int, defaultObject*>::iterator it;
 	for (it = all.begin(); it != all.end(); it++) {
 		it->second->Delete();
 	}

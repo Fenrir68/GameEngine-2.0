@@ -9,6 +9,6 @@ uniform mat4 mat4Cam;
 
 void main()
 {
-	gl_Position = mat4Cam * model * vec4(aPos, 1.0);
+	gl_Position = mat4Cam * model * vec4(aPos, 1.0f);
 	TexPos = aTex;
 }

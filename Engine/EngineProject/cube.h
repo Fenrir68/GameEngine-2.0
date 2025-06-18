@@ -14,27 +14,27 @@
 #include"defaultObject.h"
 
 class cube: public defaultObject {
-public:
+private:
 	VAO vao;
 
 	//TODO pour les coo de tex peut-être passer sur un sprite carré pour avoir des coo qui tombe pile ( pas de 1/3 comme là )
 
-	GLfloat vertices[70]= 
+	GLfloat vertices[84] =
 	{
-		0.0f, 1.0f, 1.0f,		0.0f, 1.0f,		//A
-		1.0f, 1.0f, 1.0f,		0.25f, 1.0f,	//B
-		0.0f, 0.0f, 1.0f,		0.0f, 0.67f,	//C
-		1.0f, 0.0f, 1.0f,		0.25f, 0.67f,	//D
-		1.0f, 1.0f, 1.0f,		0.5f, 0.67f,	//E
-		0.0f, 1.0f, 1.0f,		0.75f, 0.67f,	//F
-		0.0f, 0.0f, 1.0f,		1.0f, 0.67f,	//G
-		0.0f, 0.0f, 0.0f,		0.0f, 0.33f,	//H
-		1.0f, 0.0f, 0.0f,		0.25f, 0.33f,	//I
-		1.0f, 1.0f, 0.0f,		0.5f, 0.33f,	//J
-		0.0f, 1.0f, 0.0f,		0.75f, 0.33f,	//K
-		0.0f, 0.0f, 0.0f,		1.0f, 0.33f,	//L
-		1.0f, 1.0f, 0.0f,		0.75f, 0.0f,	//M
-		1.0f, 0.0f, 0.0f,		1.0f, 0.0f		//N
+		0.0f, 1.0f, 1.0f,		0.0f, 1.0f,		0.0f,//A
+		1.0f, 1.0f, 1.0f,		0.25f, 1.0f,	0.0f,//B
+		0.0f, 0.0f, 1.0f,		0.0f, 0.67f,	0.0f,//C
+		1.0f, 0.0f, 1.0f,		0.25f, 0.67f,	0.0f,//D
+		1.0f, 1.0f, 1.0f,		0.5f, 0.67f,	0.0f,//E
+		0.0f, 1.0f, 1.0f,		0.75f, 0.67f,	0.0f,//F
+		0.0f, 0.0f, 1.0f,		1.0f, 0.67f,	0.0f,//G
+		0.0f, 0.0f, 0.0f,		0.0f, 0.33f,	0.0f,//H
+		1.0f, 0.0f, 0.0f,		0.25f, 0.33f,	0.0f,//I
+		1.0f, 1.0f, 0.0f,		0.5f, 0.33f,	0.0f,//J
+		0.0f, 1.0f, 0.0f,		0.75f, 0.33f,	0.0f,//K
+		0.0f, 0.0f, 0.0f,		1.0f, 0.33f,	0.0f,//L
+		1.0f, 1.0f, 0.0f,		0.75f, 0.0f,	0.0f,//M
+		1.0f, 0.0f, 0.0f,		1.0f, 0.0f,		0.0f//N
 	};
 
 	VBO vbo = VBO(0, 0);
@@ -61,17 +61,22 @@ public:
 	};
 	EBO ebo = EBO(indices, sizeof(indices));
 
+	void generalConstructor(int numCompo);
+
+public:
+	
 	float side;
 
 	glm::vec3 Position;
 
 	Shader* shader;
 
-	Texture* tex;
+	Texture* tex = NULL;
 
 	glm::mat4 model = glm::mat4(1.0f);
 
 	cube(float side, glm::vec3 Position, Texture* texPtr, Shader* shader);
+	cube(float side, glm::vec3 Position, glm::vec3 color, Shader* shader);
 
 	void Rotate(float angle, glm::vec3 axe);
 	void Translate(glm::vec3 vector);

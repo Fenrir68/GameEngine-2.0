@@ -22,7 +22,7 @@ cube::cube(float side, glm::vec3 Position, Texture* texPtr, Shader* shader) {
 	cube::shader = shader;
 
 	tex = texPtr;
-	(*tex).texUnit(*shader, "tex0", 0);
+	tex->texUnit(*shader, "tex0", 0);
 
 	for (int i = 0; i < 14; i++) {
 		for (int j = 0; j < 3; j++) {
@@ -49,12 +49,12 @@ cube::cube(float side, glm::vec3 Position, glm::vec3 color, Shader* shader) {
 }
 
 void cube::Draw() {
-	(*shader).Activate();
+	shader->Activate();
 
-	glUniformMatrix4fv(glGetUniformLocation((*shader).ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
 	if (tex != NULL) {
-		(*tex).Bind();
+		tex->Bind();
 	}
 	vao.Bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);

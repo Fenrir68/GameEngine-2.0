@@ -142,6 +142,7 @@
     <ClCompile Include="defaultObject.cpp" />
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shaderClass.cpp" />
     <ClCompile Include="stb.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="cube.h" />
     <ClInclude Include="defaultObject.h" />
     <ClInclude Include="EBO.h" />
+    <ClInclude Include="light.h" />
     <ClInclude Include="shaderClass.h" />
     <ClInclude Include="textureClass.h" />
     <ClInclude Include="VAO.h" />
@@ -162,6 +164,8 @@
   <ItemGroup>
     <None Include="color.frag" />
     <None Include="color.vert" />
+    <None Include="light.frag" />
+    <None Include="light.vert" />
     <None Include="texture.frag" />
     <None Include="texture.vert" />
   </ItemGroup>

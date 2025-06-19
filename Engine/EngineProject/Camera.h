@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "glm/glm.hpp"
@@ -28,14 +29,14 @@ public:
 	float nearPlane, farPlane;
 
 	glm::mat4 proj = glm::mat4(1.0f);
-	glm::mat4 view = glm::mat4(1.0f);
-	Shader* shaderPtr;
+	glm::mat4 view = glm::mat4(1.0f); 
+	std::map<int, defaultObject*>* shadersPtr;
 
 	bool firstClick = true;
 	double mouseX, mouseY;
 	float angle_limit = 5.0f;
 
-	Camera(int width, int height, glm::vec3 position, float baseFOV, float nearplane, float farplane, Shader* shader);
+	Camera(int width, int height, glm::vec3 position, float baseFOV, float nearplane, float farplane, std::map<int, defaultObject*>* shaders_ptr);
 
 	void Matrix();
 	void BindMatCam();

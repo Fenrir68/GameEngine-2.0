@@ -13,8 +13,8 @@
 #include"shaderClass.h"
 #include"defaultObject.h"
 
-class cube: public defaultObject {
-private:
+class cube: public drawableObject {
+protected:
 	VAO vao;
 
 	//TODO pour les coo de tex peut-être passer sur un sprite carré pour avoir des coo qui tombe pile ( pas de 1/3 comme là )
@@ -81,6 +81,6 @@ public:
 	void Rotate(float angle, glm::vec3 axe);
 	void Translate(glm::vec3 vector);
 	void goTo(glm::vec3 newPos);
-	void Draw();
+	void Draw() override;
 	void Delete() override;
 };

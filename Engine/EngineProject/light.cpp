@@ -6,7 +6,7 @@ Light::Light(glm::vec3 color, glm::vec3 position, float size, std::map<int, defa
 	shadersPtr = shaders_ptr;
 	ownShader = (Shader*)(*shadersPtr)[shader];
 
-	for (int i = 0; i < 42; i++) {
+	for (int i = 0; i < 24; i++) {
 		vertices[i] *= size;
 	}
 

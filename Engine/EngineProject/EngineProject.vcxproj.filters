@@ -57,6 +57,9 @@
     <ClCompile Include="light.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="dictManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VBO.h">
@@ -86,24 +89,21 @@
     <ClInclude Include="light.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="dictManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="texture.vert">
-      <Filter>Fichiers de ressources\Shaders</Filter>
-    </None>
-    <None Include="texture.frag">
-      <Filter>Fichiers de ressources\Shaders</Filter>
-    </None>
-    <None Include="color.vert">
-      <Filter>Fichiers de ressources\Shaders</Filter>
-    </None>
-    <None Include="color.frag">
-      <Filter>Fichiers de ressources\Shaders</Filter>
-    </None>
     <None Include="light.vert">
       <Filter>Fichiers de ressources\Shaders</Filter>
     </None>
     <None Include="light.frag">
+      <Filter>Fichiers de ressources\Shaders</Filter>
+    </None>
+    <None Include="default.vert">
+      <Filter>Fichiers de ressources\Shaders</Filter>
+    </None>
+    <None Include="default.frag">
       <Filter>Fichiers de ressources\Shaders</Filter>
     </None>
   </ItemGroup>

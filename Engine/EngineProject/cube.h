@@ -13,29 +13,47 @@
 #include"shaderClass.h"
 #include"defaultObject.h"
 
-class cube: public drawableObject {
+class Cube: public drawableObject {
 protected:
 	VAO vao;
 
 	//TODO pour les coo de tex peut-être passer sur un sprite carré pour avoir des coo qui tombe pile ( pas de 1/3 comme là )
 
-	GLfloat vertices[84] =
+	GLfloat vertices[120] =
 	{
-		0.0f, 1.0f, 1.0f,		0.0f, 1.0f,		0.0f,//A
-		1.0f, 1.0f, 1.0f,		0.25f, 1.0f,	0.0f,//B
-		0.0f, 0.0f, 1.0f,		0.0f, 0.67f,	0.0f,//C
-		1.0f, 0.0f, 1.0f,		0.25f, 0.67f,	0.0f,//D
-		1.0f, 1.0f, 1.0f,		0.5f, 0.67f,	0.0f,//E
-		0.0f, 1.0f, 1.0f,		0.75f, 0.67f,	0.0f,//F
-		0.0f, 0.0f, 1.0f,		1.0f, 0.67f,	0.0f,//G
-		0.0f, 0.0f, 0.0f,		0.0f, 0.33f,	0.0f,//H
-		1.0f, 0.0f, 0.0f,		0.25f, 0.33f,	0.0f,//I
-		1.0f, 1.0f, 0.0f,		0.5f, 0.33f,	0.0f,//J
-		0.0f, 1.0f, 0.0f,		0.75f, 0.33f,	0.0f,//K
-		0.0f, 0.0f, 0.0f,		1.0f, 0.33f,	0.0f,//L
-		1.0f, 1.0f, 0.0f,		0.75f, 0.0f,	0.0f,//M
-		1.0f, 0.0f, 0.0f,		1.0f, 0.0f,		0.0f//N
-	};
+		//		COORDONATE		//		TEXTURE
+
+			0.0f, 1.0f, 1.0f,		0.0f, 1.0f,
+			0.0f, 0.0f, 1.0f,		0.0f, 0.67f,
+			1.0f, 1.0f, 1.0f,		0.25f, 1.0f,
+			1.0f, 0.0f, 1.0f,		0.25f, 0.67f,
+
+			0.0f, 0.0f, 1.0f,		0.0f, 0.67f,
+			0.0f, 0.0f, 0.0f,		0.0f, 0.33f,
+			1.0f, 0.0f, 1.0f,		0.25f, 0.67f,
+			1.0f, 0.0f, 0.0f,		0.25f, 0.33f,
+
+			1.0f, 0.0f, 1.0f,		0.25f, 0.67f,
+			1.0f, 0.0f, 0.0f,		0.25f, 0.33f,
+			1.0f, 1.0f, 1.0f,		0.5f, 0.67f,
+			1.0f, 1.0f, 0.0f,		0.5f, 0.33f,
+
+			1.0f, 1.0f, 1.0f,		0.5f, 0.67f,
+			1.0f, 1.0f, 0.0f,		0.5f, 0.33f,
+			0.0f, 1.0f, 1.0f,		0.75f, 0.67f,
+			0.0f, 1.0f, 0.0f,		0.75f, 0.33f,
+
+			0.0f, 1.0f, 1.0f,		0.75f, 0.67f,
+			0.0f, 1.0f, 0.0f,		0.75f, 0.33f,
+			0.0f, 0.0f, 1.0f,		1.0f, 0.67f,
+			0.0f, 0.0f, 0.0f,		1.0f, 0.33f,
+
+			0.0f, 0.0f, 0.0f,		1.0f, 0.33f,
+			0.0f, 1.0f, 0.0f,		0.75f, 0.33f,
+			1.0f, 0.0f, 0.0f,		1.0f, 0.0f,
+			1.0f, 1.0f, 0.0f,		0.75f, 0.0f
+
+		};
 
 	VBO vbo = VBO(0, 0);
 
@@ -44,39 +62,40 @@ protected:
 		0,1,2,
 		1,2,3,
 
-		2,3,7,
-		3,7,8,
+		4,5,6,
+		5,6,7,
 
-		3,4,8,
-		4,8,9,
+		8,9,10,
+		9,10,11,
 
-		4,5,9,
-		5,9,10,
+		12,13,14,
+		13,14,15,
 
-		5,6,10,
-		6,10,11,
+		16,17,18,
+		17,18,19,
 
-		10,11,12,
-		11,12,13
+		20,21,22,
+		21,22,23
 	};
 	EBO ebo = EBO(indices, sizeof(indices));
 
-	void generalConstructor(int numCompo);
+	void general_constructor(float size, glm::vec3 Position, Shader* shader);
 
 public:
 	
-	float side;
+	float size;
 
 	glm::vec3 Position;
 
 	Shader* shader;
+	glm::vec3 color = glm::vec3(0.8f, 0.2f, 1.0f);
 
 	Texture* tex = NULL;
 
 	glm::mat4 model = glm::mat4(1.0f);
 
-	cube(float side, glm::vec3 Position, Texture* texPtr, Shader* shader);
-	cube(float side, glm::vec3 Position, glm::vec3 color, Shader* shader);
+	Cube(float size, glm::vec3 Position, Texture* texPtr, Shader* shader);
+	Cube(float size, glm::vec3 Position, glm::vec3 clr, Shader* shader);
 
 	void Rotate(float angle, glm::vec3 axe);
 	void Translate(glm::vec3 vector);

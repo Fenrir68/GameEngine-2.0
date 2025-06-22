@@ -16,51 +16,14 @@
 #include"cube.h"
 #include"light.h"
 #include"defaultObject.h"
-
-#define SHADER_CODE 0
-#define TEXTURE_CODE 1
-#define CUBE_CODE 2
-#define LIGHT_CODE 3
-
-void add_element(std::map<int, std::map<int, defaultObject*>*>* dict, defaultObject* element, int type) {
-	if (!dict->count(type)) {
-		(*dict)[type] = new std::map<int, defaultObject*>;
-	}
-	int n = (*dict)[type]->size();
-	(*(*dict)[type])[n] = element;
-}
-
-void printingKeys(std::map<int, std::map<int, defaultObject*>*>* dict) {
-	std::map<int, std::map<int, defaultObject*>*>::iterator it;
-	for (it = dict->begin(); it != dict->end(); it++) {
-		std::cout << "-------" << it->first << std::endl;
-
-		std::map<int, defaultObject*>* crnt_map_ptr = (it->second);
-		std::map<int, defaultObject*>::iterator it1;
-		for (it1 = crnt_map_ptr->begin(); it1 != crnt_map_ptr->end(); it1++) {
-			std::cout << it1->first << std::endl;
-		}
-	}
-}
-
-void drawingElement(std::map<int, std::map<int, defaultObject*>*>* dict, int beginCODE, int endCODE) {
-	for (int k = beginCODE; k <= endCODE; k++) {
-		if (dict->count(k)) {
-			std::map<int, defaultObject*>* crnt_map = (*dict)[k];
-			std::map<int, defaultObject*>::iterator ite = crnt_map->begin();
-			for (ite; ite != crnt_map->end(); ite++) {
-				((drawableObject*)ite->second)->Draw();
-			}
-		}
-	}
-}
+#include"dictManager.h"
 
 void MAJlightcolor(std::map<int, std::map<int, defaultObject*>*>* dict, int light) {
-	((Light*)(*(*dict)[LIGHT_CODE])[light])->MAJcolor();
+	((Light*)(*(*dict)[LIGHT_TYPE])[light])->MAJcolor();
 }
 
 void MAJlightcolor(std::map<int, std::map<int, defaultObject*>*>* dict, int light, glm::vec3 newcolor) {
-	((Light*)(*(*dict)[LIGHT_CODE])[light])->MAJcolor(newcolor);
+	((Light*)(*(*dict)[LIGHT_TYPE])[light])->MAJcolor(newcolor);
 }
 
 int main() {
@@ -89,32 +52,35 @@ int main() {
 	glViewport(0, 0, windowWidth, windowHeight);
 
 	std::map<int, std::map<int, defaultObject*>*> all; //000->099 = shader // 100->199 = textures // 200->299 = cube
+	dictManager M(&all);
 
-	add_element(&all, new Shader("texture.vert", "texture.frag"), SHADER_CODE);
-	add_element(&all, new Shader("color.vert", "color.frag"), SHADER_CODE);
-	add_element(&all, new Shader("light.vert", "light.frag"), SHADER_CODE);
+	M.add_element(new Shader("default.vert", "default.frag"), SHADER_TYPE);
+	M.add_element(new Shader("light.vert", "light.frag"), SHADER_TYPE);
 
-	add_element(&all, new Texture("brique.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_CODE);
-	add_element(&all, new Texture("cube_tex.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_CODE);
+	M.add_element(new Texture("brique.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_TYPE);
+	M.add_element(new Texture("cube_tex.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_TYPE);
 
-	add_element(&all, new cube(1.0f, glm::vec3(-1.0f, 0.0f, 0.0f), (Texture*)(*(all[TEXTURE_CODE]))[1], (Shader*)((*(all[SHADER_CODE]))[0])), CUBE_CODE);
-	add_element(&all, new cube(1.0f, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 1.0f), (Shader*)((*(all[SHADER_CODE]))[1])), CUBE_CODE);
+	//essayer de faire un seul shader qui gère les couleur et les texture
 
-	add_element(&all, new Light(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, 2.0f, 2.0f), 0.5f, all[SHADER_CODE], 2), LIGHT_CODE);
+	M.add_element(new Cube(1.0f, glm::vec3(-1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
+	M.add_element(new Cube(1.0f, glm::vec3(0.0f, 0.0f, 0.0f), NULL, M.getShaderPtr(0)), CUBE_TYPE);
+	M.add_element(new Cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), M.getShaderPtr(0)), CUBE_TYPE);
+
+	M.add_element(new Light(glm::vec3(1.0f, 1.0f, 0.0f), glm::vec3(2.0f, 2.0f, -2.0f), 0.5f, all[SHADER_TYPE], 1), LIGHT_TYPE);
 	
 	MAJlightcolor(&all, 0);
 
-	printingKeys(&all);
+	M.printingKeys();
 
-	Camera camera = Camera(windowWidth, windowHeight, glm::vec3(0.0f, 0.0f, 2.5f), 45.0f, 0.1f, 20.0f, all[SHADER_CODE]);
+	Camera camera = Camera(windowWidth, windowHeight, glm::vec3(0.0f, 0.0f, 2.5f), 45.0f, 0.1f, 20.0f, all[SHADER_TYPE]);
 	camera.Matrix();
+
 
 	glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glfwSwapBuffers(window);
 
 	glEnable(GL_DEPTH_TEST);
-
 
 	int FPS = 30;
 	float frq = 1.0f / FPS;
@@ -131,24 +97,15 @@ int main() {
 
 		camera.Inputs(window);
 
-		drawingElement(&all, CUBE_CODE, LIGHT_CODE);
-		
+		M.drawingElement(CUBE_TYPE, LIGHT_TYPE);
+
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
 		glfwPollEvents();
 	};
 
-	std::map<int, std::map<int, defaultObject*>*>::iterator it;
-	for (it = all.begin(); it != all.end(); it++) {
-		std::map<int, defaultObject*>* crnt_map_ptr = (it->second);
-		std::map<int, defaultObject*>::iterator it1;
-		for (it1 = crnt_map_ptr->begin(); it1 != crnt_map_ptr->end(); it1++) {
-			it1->second->Delete();
-		}
-		crnt_map_ptr->clear();
-	}
-	all.clear();
+	M.deleteAll();
 
 	glfwTerminate();
 	return 0;

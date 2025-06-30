@@ -1,8 +1,6 @@
 #include"cube.h"
 #include<iostream>
 
-#define VERTEX_SIZE 5
-
 void Cube::general_constructor(float size, glm::vec3 Position, Shader* shader) {
 
 	Cube::size = size;
@@ -21,6 +19,7 @@ void Cube::general_constructor(float size, glm::vec3 Position, Shader* shader) {
 	ebo.Bind();
 	vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, VERTEX_SIZE * sizeof(GLfloat), (void*)0);
 	vao.LinkAttrib(vbo, 1, 2, GL_FLOAT, VERTEX_SIZE * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	vao.LinkAttrib(vbo, 2, 3, GL_FLOAT, VERTEX_SIZE * sizeof(GLfloat), (void*)(5 * sizeof(GLfloat)));
 	vao.Unbind();
 	ebo.Unbind();
 
@@ -52,7 +51,7 @@ void Cube::Draw() {
 		glUniform1i(glGetUniformLocation(shader->ID, "isTextured"), GL_TRUE);
 	}else {
 		glUniform1i(glGetUniformLocation(shader->ID, "isTextured"), GL_FALSE);
-		glUniform3fv(glGetUniformLocation(shader->ID, "color"), 1, glm::value_ptr(color));
+		glUniform3fv(glGetUniformLocation(shader->ID, "ownColor"), 1, glm::value_ptr(color));
 	}
 	vao.Bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);

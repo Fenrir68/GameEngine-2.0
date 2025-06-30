@@ -19,11 +19,11 @@
 #include"dictManager.h"
 
 void MAJlightcolor(std::map<int, std::map<int, defaultObject*>*>* dict, int light) {
-	((Light*)(*(*dict)[LIGHT_TYPE])[light])->MAJcolor();
+	((Light*)(*(*dict)[LIGHT_TYPE])[light])->MAJlight();
 }
 
 void MAJlightcolor(std::map<int, std::map<int, defaultObject*>*>* dict, int light, glm::vec3 newcolor) {
-	((Light*)(*(*dict)[LIGHT_TYPE])[light])->MAJcolor(newcolor);
+	((Light*)(*(*dict)[LIGHT_TYPE])[light])->MAJlight(newcolor);
 }
 
 int main() {
@@ -63,21 +63,34 @@ int main() {
 	//essayer de faire un seul shader qui gère les couleur et les texture
 
 	M.add_element(new Cube(1.0f, glm::vec3(-1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
-	M.add_element(new Cube(1.0f, glm::vec3(0.0f, 0.0f, 0.0f), NULL, M.getShaderPtr(0)), CUBE_TYPE);
-	M.add_element(new Cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), M.getShaderPtr(0)), CUBE_TYPE);
+	M.add_element(new Cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
 
-	M.add_element(new Light(glm::vec3(1.0f, 1.0f, 0.0f), glm::vec3(2.0f, 2.0f, -2.0f), 0.5f, all[SHADER_TYPE], 1), LIGHT_TYPE);
+	M.getCubePtr(1)->Rotate(180.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+	M.add_element(new Light(0.1f, glm::vec3(0.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 2.0f, all[SHADER_TYPE], 1), LIGHT_TYPE);
 	
 	MAJlightcolor(&all, 0);
 
 	M.printingKeys();
 
-	Camera camera = Camera(windowWidth, windowHeight, glm::vec3(0.0f, 0.0f, 2.5f), 45.0f, 0.1f, 20.0f, all[SHADER_TYPE]);
+	Camera camera = Camera(windowWidth, windowHeight, glm::vec3(0.0f, 0.0f, 5.0f), 45.0f, 0.1f, 20.0f, all[SHADER_TYPE]);
 	camera.Matrix();
 
+	//set ambient light in all shaders
+	float ambientLight = 0.1f;
+	std::map<int, defaultObject*>::iterator shaderIt;
+	for (shaderIt = all[SHADER_TYPE]->begin(); shaderIt != all[SHADER_TYPE]->end(); shaderIt++) {
+		Shader* crntShaderPtr = (Shader*)(shaderIt->second);
+		crntShaderPtr->Activate();
+		glUniform1f(glGetUniformLocation(crntShaderPtr->ID, "ambientLight"), ambientLight);
+	}
 
-	glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+	//set Background color
+	float backgroundcolor[4] = { 0.07f, 0.13f, 0.17f, 1.0f };
+	glClearColor(backgroundcolor[0], backgroundcolor[1], backgroundcolor[2], backgroundcolor[3]);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	// Swap the back buffer with the front buffer
 	glfwSwapBuffers(window);
 
 	glEnable(GL_DEPTH_TEST);
@@ -92,14 +105,13 @@ int main() {
 		while (crntTime - prevTime < frq) { crntTime = glfwGetTime(); }
 		prevTime = crntTime;
 
-		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		glClearColor(backgroundcolor[0], backgroundcolor[1], backgroundcolor[2], backgroundcolor[3]);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		camera.Inputs(window);
 
 		M.drawingElement(CUBE_TYPE, LIGHT_TYPE);
 
-		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
 		glfwPollEvents();

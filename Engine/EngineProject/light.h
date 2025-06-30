@@ -15,15 +15,15 @@ class Light : public drawableObject{
 private:
 	GLfloat vertices[24] =
 	{
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f, 0.5f,
+		-0.5f, 0.5f, -0.5f,
+		-0.5f, 0.5f, 0.5f,
 
-		1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 1.0f, 
-		1.0f, 1.0f, 0.0f, 
-		1.0f, 1.0f, 1.0f
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, 0.5f,
+		0.5f, 0.5f, -0.5f,
+		0.5f, 0.5f, 0.5f
 	};
 
 	VBO vbo = VBO(0, 0);
@@ -56,7 +56,7 @@ public:
 	VAO vao;
 
 	glm::vec3 Color;
-
+	float Intensity = 1.0f;
 	glm::vec3 Position;
 
 	Shader* ownShader;
@@ -65,12 +65,12 @@ public:
 
 	glm::mat4 model = glm::mat4(1.0f);
 
-	Light(glm::vec3 color, glm::vec3 position, float size, std::map<int, defaultObject*>* shaders_ptr, int shader);
+	Light(float size, glm::vec3 position, glm::vec3 color, float intensity, std::map<int, defaultObject*>* shaders_ptr, int shader);
 
 	void Draw() override;
 	void Translate(glm::vec3 vector);
-	void MAJcolor();
-	void MAJcolor(glm::vec3 newcolor);
+	void MAJlight();
+	void MAJlight(glm::vec3 newcolor);
 	void Delete() override;
 
 };

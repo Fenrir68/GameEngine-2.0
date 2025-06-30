@@ -159,15 +159,15 @@
     <ClInclude Include="EBO.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="shaderClass.h" />
+    <ClInclude Include="default.frag" />
     <ClInclude Include="textureClass.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.frag" />
-    <None Include="default.vert" />
     <None Include="light.frag" />
     <None Include="light.vert" />
+    <None Include="default.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="brique.png" />

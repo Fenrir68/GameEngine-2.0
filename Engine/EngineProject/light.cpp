@@ -1,10 +1,12 @@
 #include "light.h"
 
-Light::Light(glm::vec3 color, glm::vec3 position, float size, std::map<int, defaultObject*>* shaders_ptr, int shader) {
+Light::Light(float size, glm::vec3 position, glm::vec3 color, float intensity, std::map<int, defaultObject*>* shaders_ptr, int shader) {
 
 	Color = color;
+	Intensity = intensity;
 	shadersPtr = shaders_ptr;
 	ownShader = (Shader*)(*shadersPtr)[shader];
+	Position = position;
 
 	for (int i = 0; i < 24; i++) {
 		vertices[i] *= size;
@@ -19,7 +21,7 @@ Light::Light(glm::vec3 color, glm::vec3 position, float size, std::map<int, defa
 	vao.Unbind();
 	ebo.Unbind();
 
-	Translate(position);
+	Translate(Position);
 }
 
 void Light::Draw() {
@@ -35,18 +37,21 @@ void Light::Translate(glm::vec3 vector) {
 	model = glm::translate(model, vector);
 }
 
-void Light::MAJcolor() {
+void Light::MAJlight() {
 	std::map<int, defaultObject*>::iterator shaders_ite;
 	for (shaders_ite = shadersPtr->begin(); shaders_ite != shadersPtr->end(); shaders_ite++) {
 		Shader* crnt_shader_ptr = (Shader*)shaders_ite->second;
 		crnt_shader_ptr->Activate();
-		glUniform3f(glGetUniformLocation(crnt_shader_ptr->ID, "light"), Color.x, Color.y, Color.z);
+		GLuint crntID = crnt_shader_ptr->ID;
+		glUniform3f(glGetUniformLocation(crntID, "lightColor"), Color.x, Color.y, Color.z);
+		glUniform3f(glGetUniformLocation(crntID, "lightPos"), Position.x, Position.y, Position.z);
+		glUniform1f(glGetUniformLocation(crntID, "lightIntensity"), Intensity);
 	}
 }
 
-void Light::MAJcolor(glm::vec3 newcolor) {
+void Light::MAJlight(glm::vec3 newcolor) {
 	Color = newcolor;
-	MAJcolor();
+	MAJlight();
 }
 
 void Light::Delete() {

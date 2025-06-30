@@ -92,6 +92,9 @@
     <ClInclude Include="dictManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="default.frag">
+      <Filter>Fichiers de ressources\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="light.vert">
@@ -101,9 +104,6 @@
       <Filter>Fichiers de ressources\Shaders</Filter>
     </None>
     <None Include="default.vert">
-      <Filter>Fichiers de ressources\Shaders</Filter>
-    </None>
-    <None Include="default.frag">
       <Filter>Fichiers de ressources\Shaders</Filter>
     </None>
   </ItemGroup>

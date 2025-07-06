@@ -5,13 +5,15 @@
 #include "shaderClass.h"
 #include "textureClass.h"
 #include "cube.h"
+#include "Plan.h"
 #include "light.h"
 
 #define SHADER_TYPE 0
 #define TEXTURE_TYPE 1
 #define CUBE_TYPE 2
-#define LIGHT_TYPE 3
-#define allTYPE {SHADER_TYPE, TEXTURE_TYPE, CUBE_TYPE, LIGHT_TYPE}
+#define PLAN_TYPE 3
+#define LIGHT_TYPE 4
+#define allTYPE {SHADER_TYPE, TEXTURE_TYPE, CUBE_TYPE, PLAN_TYPE, LIGHT_TYPE}
 
 class dictManager {
 public:
@@ -25,6 +27,7 @@ public:
 	Shader* getShaderPtr(int ind);
 	Texture* getTexturePtr(int ind);
 	Cube* getCubePtr(int ind);
+	Plan* getPlanPtr(int ind);
 	Light* getLightPtr(int ind);
 	void deleteAll();
 	void drawingElement(int beginCODE, int endCODE);

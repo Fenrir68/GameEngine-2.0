@@ -14,6 +14,7 @@
 #include"VBO.h"
 #include"EBO.h"
 #include"cube.h"
+#include"Plan.h"
 #include"light.h"
 #include"defaultObject.h"
 #include"dictManager.h"
@@ -51,7 +52,7 @@ int main() {
 	//bottom left -> top right
 	glViewport(0, 0, windowWidth, windowHeight);
 
-	std::map<int, std::map<int, defaultObject*>*> all; //000->099 = shader // 100->199 = textures // 200->299 = cube
+	std::map<int, std::map<int, defaultObject*>*> all;
 	dictManager M(&all);
 
 	M.add_element(new Shader("default.vert", "default.frag"), SHADER_TYPE);
@@ -59,15 +60,17 @@ int main() {
 
 	M.add_element(new Texture("brique.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_TYPE);
 	M.add_element(new Texture("cube_tex.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_TYPE);
+	M.add_element(new Texture("floor.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_TYPE);
 
 	//essayer de faire un seul shader qui gère les couleur et les texture
 
-	M.add_element(new Cube(1.0f, glm::vec3(-1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
-	M.add_element(new Cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
+	//M.add_element(new Cube(1.0f, glm::vec3(-1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
+	//M.add_element(new Cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
 
-	M.getCubePtr(1)->Rotate(180.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	//M.getCubePtr(1)->Rotate(90.0f, glm::vec3(1.0f, 1.0f, 0.0f));
+	M.add_element(new Plan(3.0f, glm::vec3(0.0f, -1.0f, 0.0f), M.getTexturePtr(2), M.getShaderPtr(0)), PLAN_TYPE);
 
-	M.add_element(new Light(0.1f, glm::vec3(0.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 2.0f, all[SHADER_TYPE], 1), LIGHT_TYPE);
+	M.add_element(new Light(0.1f, glm::vec3(0.0f, -0.5f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, all[SHADER_TYPE], 1), LIGHT_TYPE);
 	
 	MAJlightcolor(&all, 0);
 

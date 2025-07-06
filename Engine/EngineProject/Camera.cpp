@@ -24,6 +24,7 @@ void Camera::BindMatCam() {
 		Shader* crnt_shader_ptr = ((Shader*)(it->second));
 		crnt_shader_ptr->Activate();
 		glUniformMatrix4fv(glGetUniformLocation(crnt_shader_ptr->ID, "mat4Cam"), 1, GL_FALSE, glm::value_ptr(proj * view));
+		glUniform3f(glGetUniformLocation(crnt_shader_ptr->ID, "camPos"), Position.x, Position.y, Position.z);
 	}
 }
 

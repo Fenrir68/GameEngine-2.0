@@ -60,6 +60,9 @@
     <ClCompile Include="dictManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Plan.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VBO.h">
@@ -95,6 +98,9 @@
     <ClInclude Include="default.frag">
       <Filter>Fichiers de ressources\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="Plan.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="light.vert">
@@ -112,6 +118,9 @@
       <Filter>Fichiers de ressources\Images</Filter>
     </Image>
     <Image Include="brique.png">
+      <Filter>Fichiers de ressources\Images</Filter>
+    </Image>
+    <Image Include="floor.png">
       <Filter>Fichiers de ressources\Images</Filter>
     </Image>
   </ItemGroup>

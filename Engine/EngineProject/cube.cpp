@@ -69,7 +69,7 @@ void Cube::Translate(glm::vec3 vector) {
 void Cube::goTo(glm::vec3 newPos) {
 	model = glm::mat4(1.0f);
 	Position = newPos;
-	Translate(Position);
+	Translate(newPos);
 }
 
 void Cube::Delete() {

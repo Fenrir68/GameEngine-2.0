@@ -43,6 +43,10 @@ Cube* dictManager::getCubePtr(int ind) {
 	return (Cube*)getElementPtr(CUBE_TYPE, ind);
 }
 
+Plan* dictManager::getPlanPtr(int ind) {
+	return (Plan*)getElementPtr(PLAN_TYPE, ind);
+}
+
 Light* dictManager::getLightPtr(int ind) {
 	return (Light*)getElementPtr(LIGHT_TYPE, ind);
 }
@@ -51,12 +55,14 @@ void dictManager::deleteAll() {
 	std::cout << "start DELETING" << std::endl;
 	for (int type : allTYPE) {
 		std::map<int, defaultObject*>* crnt_map_ptr = (*dict)[type];
-		int n = crnt_map_ptr->size();
-		std::cout << "-----------" << type << std::endl;
-		for (int k = 0; k < n; k++) {
-			std::cout << k << std::endl;
-			(*crnt_map_ptr)[k]->Delete();
-		}crnt_map_ptr->clear();
+		if (crnt_map_ptr != nullptr) {
+			int n = crnt_map_ptr->size();
+			std::cout << "-----------" << type << std::endl;
+			for (int k = 0; k < n; k++) {
+				std::cout << k << std::endl;
+				(*crnt_map_ptr)[k]->Delete();
+			}crnt_map_ptr->clear();
+		}
 	}dict->clear();
 	std::cout << "end DELETING///////////////////" << std::endl;
 }

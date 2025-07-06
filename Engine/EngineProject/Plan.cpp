@@ -37,18 +37,8 @@ Plan::Plan(float size, glm::vec3 position, glm::vec3 color, Shader* shader) {
 	generalConstructor(size, position, shader);
 }
 
-void Plan::Translate(glm::vec3 vector) {
-	model = glm::translate(model, vector);
-}
-
-void Plan::goTo(glm::vec3 newPos) {
-	model = glm::mat4(1.0f);
-	Position = newPos;
-	Translate(newPos);
-}
-
-void Plan::Rotate(float angle, glm::vec3 axe) {
-	model = glm::rotate(model, glm::radians(angle), axe);
+Plan::Plan(float size, glm::vec3 position, Shader* shader) {
+	generalConstructor(size, position, shader);
 }
 
 void Plan::Draw() {
@@ -58,6 +48,9 @@ void Plan::Draw() {
 
 	if (tex != NULL) {
 		tex->Bind();
+		if (tex->specMap != nullptr) {
+			tex->specMap->Bind();
+		}
 		glUniform1i(glGetUniformLocation(shader->ID, "isTextured"), GL_TRUE);
 	}
 	else {

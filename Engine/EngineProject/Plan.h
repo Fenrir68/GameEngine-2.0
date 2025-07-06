@@ -40,20 +40,16 @@ protected:
 public:
 	float size;
 
-	glm::vec3 Position;
-	Shader* shader;
 	glm::vec3 color = glm::vec3(1.0f, 0.5f, 0.0f);
+	Shader* shader;
+
 
 	Texture* tex = NULL;
 
-	glm::mat4 model = glm::mat4(1.0f);
-
 	Plan(float size, glm::vec3 position, Texture* texture, Shader* shader);
 	Plan(float size, glm::vec3 position, glm::vec3 color, Shader* shader);
+	Plan(float size, glm::vec3 position, Shader* shader);
 
-	void Rotate(float angle, glm::vec3 axe);
-	void Translate(glm::vec3 vector);
-	void goTo(glm::vec3 newPos);
-	void Draw();
-	void Delete();
+	void Draw() override;
+	void Delete() override;
 };

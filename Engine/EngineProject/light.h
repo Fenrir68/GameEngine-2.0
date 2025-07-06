@@ -1,18 +1,15 @@
 #pragma once
 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include"glm/glm.hpp"
-#include"glm/gtc/matrix_transform.hpp"
-#include"glm/gtc/type_ptr.hpp"
 #include"VAO.h"
 #include"EBO.h"
+#include"defaultObject.h"
 #include"shaderClass.h"
 #include<map>
 
 class Light : public drawableObject{
 
 private:
+	VAO vao;
 	GLfloat vertices[24] =
 	{
 		-0.5f, -0.5f, -0.5f,
@@ -53,22 +50,15 @@ private:
 
 public:
 
-	VAO vao;
-
 	glm::vec3 Color;
 	float Intensity = 1.0f;
-	glm::vec3 Position;
-
-	Shader* ownShader;
 
 	std::map<int, defaultObject*>* shadersPtr;
-
-	glm::mat4 model = glm::mat4(1.0f);
+	Shader* shader;
 
 	Light(float size, glm::vec3 position, glm::vec3 color, float intensity, std::map<int, defaultObject*>* shaders_ptr, int shader);
 
 	void Draw() override;
-	void Translate(glm::vec3 vector);
 	void MAJlight();
 	void MAJlight(glm::vec3 newcolor);
 	void Delete() override;

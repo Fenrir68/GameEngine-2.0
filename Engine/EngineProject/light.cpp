@@ -1,11 +1,11 @@
 #include "light.h"
 
-Light::Light(float size, glm::vec3 position, glm::vec3 color, float intensity, std::map<int, defaultObject*>* shaders_ptr, int shader) {
+Light::Light(float size, glm::vec3 position, glm::vec3 color, float intensity, std::map<int, defaultObject*>* shaders_ptr, int shaderProg) {
 
 	Color = color;
 	Intensity = intensity;
 	shadersPtr = shaders_ptr;
-	ownShader = (Shader*)(*shadersPtr)[shader];
+	Light::shader = (Shader*)(*shadersPtr)[shaderProg];
 	Position = position;
 
 	for (int i = 0; i < 24; i++) {
@@ -25,16 +25,12 @@ Light::Light(float size, glm::vec3 position, glm::vec3 color, float intensity, s
 }
 
 void Light::Draw() {
-	ownShader->Activate();
+	shader->Activate();
 
-	glUniformMatrix4fv(glGetUniformLocation(ownShader->ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
 	vao.Bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-}
-
-void Light::Translate(glm::vec3 vector) {
-	model = glm::translate(model, vector);
 }
 
 void Light::MAJlight() {
@@ -43,7 +39,7 @@ void Light::MAJlight() {
 		Shader* crnt_shader_ptr = (Shader*)shaders_ite->second;
 		crnt_shader_ptr->Activate();
 		GLuint crntID = crnt_shader_ptr->ID;
-		glUniform3f(glGetUniformLocation(crntID, "lightColor"), Color.x, Color.y, Color.z);
+		glUniform4f(glGetUniformLocation(crntID, "lightColor"), Color.x, Color.y, Color.z, 1.0f);
 		glUniform3f(glGetUniformLocation(crntID, "lightPos"), Position.x, Position.y, Position.z);
 		glUniform1f(glGetUniformLocation(crntID, "lightIntensity"), Intensity);
 	}

@@ -58,9 +58,11 @@ int main() {
 	M.add_element(new Shader("default.vert", "default.frag"), SHADER_TYPE);
 	M.add_element(new Shader("light.vert", "light.frag"), SHADER_TYPE);
 
-	M.add_element(new Texture("brique.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_TYPE);
-	M.add_element(new Texture("cube_tex.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_TYPE);
-	M.add_element(new Texture("floor.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE), TEXTURE_TYPE);
+	M.add_element(new Texture("black16x16.png", GL_TEXTURE_2D, 1, GL_RGBA, GL_UNSIGNED_BYTE, nullptr), TEXTURE_TYPE);
+	M.add_element(new Texture("planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE, nullptr), TEXTURE_TYPE);
+	M.add_element(new Texture("brique.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, M.getTexturePtr(0)), TEXTURE_TYPE);
+	M.add_element(new Texture("cube_tex.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, M.getTexturePtr(0)), TEXTURE_TYPE);
+	M.add_element(new Texture("planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, M.getTexturePtr(1)), TEXTURE_TYPE);
 
 	//essayer de faire un seul shader qui gère les couleur et les texture
 
@@ -68,9 +70,10 @@ int main() {
 	//M.add_element(new Cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
 
 	//M.getCubePtr(1)->Rotate(90.0f, glm::vec3(1.0f, 1.0f, 0.0f));
-	M.add_element(new Plan(3.0f, glm::vec3(0.0f, -1.0f, 0.0f), M.getTexturePtr(2), M.getShaderPtr(0)), PLAN_TYPE);
+	M.add_element(new Plan(3.0f, glm::vec3(0.0f, -1.0f, -1.0f), M.getTexturePtr(4), M.getShaderPtr(0)), PLAN_TYPE);
+	M.getPlanPtr(0)->Rotate(90, glm::vec3(1.0f, 0.0f, 0.0f));
 
-	M.add_element(new Light(0.1f, glm::vec3(0.0f, -0.5f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, all[SHADER_TYPE], 1), LIGHT_TYPE);
+	M.add_element(new Light(0.1f, glm::vec3(0.0f, -0.5f, 0.0f), glm::vec3(1.0f), 1.0f, all[SHADER_TYPE], 1), LIGHT_TYPE);
 	
 	MAJlightcolor(&all, 0);
 

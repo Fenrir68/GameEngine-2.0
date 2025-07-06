@@ -87,21 +87,14 @@ public:
 	
 	float size;
 
-	glm::vec3 Position;
-
-	Shader* shader;
 	glm::vec3 color = glm::vec3(0.8f, 0.2f, 1.0f);
+	Shader* shader;
 
 	Texture* tex = NULL;
-
-	glm::mat4 model = glm::mat4(1.0f);
 
 	Cube(float size, glm::vec3 Position, Texture* texPtr, Shader* shader);
 	Cube(float size, glm::vec3 Position, glm::vec3 clr, Shader* shader);
 
-	void Rotate(float angle, glm::vec3 axe);
-	void Translate(glm::vec3 vector);
-	void goTo(glm::vec3 newPos);
 	void Draw() override;
 	void Delete() override;
 };

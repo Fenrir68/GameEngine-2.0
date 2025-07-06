@@ -8,7 +8,11 @@ class Texture: public defaultObject {
 public:
 	GLuint ID;
 	GLenum type;
-	Texture(const char* image, GLenum type, GLenum slot, GLenum format, GLenum pixelType);
+	GLuint unit;
+
+	Texture* specMap = nullptr;
+
+	Texture(const char* image, GLenum type, GLuint slot, GLenum format, GLenum pixelType, Texture* specMap);
 
 	void texUnit(Shader& shader, const char* uniform, GLuint unit);
 	void Bind();

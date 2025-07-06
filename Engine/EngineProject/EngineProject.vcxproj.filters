@@ -120,7 +120,13 @@
     <Image Include="brique.png">
       <Filter>Fichiers de ressources\Images</Filter>
     </Image>
-    <Image Include="floor.png">
+    <Image Include="planks.png">
+      <Filter>Fichiers de ressources\Images</Filter>
+    </Image>
+    <Image Include="planksSpec.png">
+      <Filter>Fichiers de ressources\Images</Filter>
+    </Image>
+    <Image Include="black16x16.png">
       <Filter>Fichiers de ressources\Images</Filter>
     </Image>
   </ItemGroup>

@@ -57,21 +57,6 @@ void Cube::Draw() {
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }
 
-void Cube::Rotate(float angle, glm::vec3 axe) {
-	model = glm::rotate(model, glm::radians(angle), axe);
-}
-
-void Cube::Translate(glm::vec3 vector) {
-	model = glm::translate(model, vector);
-	Position += vector;
-}
-
-void Cube::goTo(glm::vec3 newPos) {
-	model = glm::mat4(1.0f);
-	Position = newPos;
-	Translate(newPos);
-}
-
 void Cube::Delete() {
 	ebo.Delete();
 	vbo.Delete();

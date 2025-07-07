@@ -9,21 +9,22 @@
 class Light : public drawableObject{
 
 private:
-	VAO vao;
+	VAO vao = VAO();
+
 	GLfloat vertices[24] =
 	{
-		-0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f, 0.5f,
-		-0.5f, 0.5f, -0.5f,
-		-0.5f, 0.5f, 0.5f,
+		-0.05f, -0.05f, -0.05f,
+		-0.05f, -0.05f, 0.05f,
+		-0.05f, 0.05f, -0.05f,
+		-0.05f, 0.05f, 0.05f,
 
-		0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, 0.5f,
-		0.5f, 0.5f, -0.5f,
-		0.5f, 0.5f, 0.5f
+		0.05f, -0.05f, -0.05f,
+		0.05f, -0.05f, 0.05f,
+		0.05f, 0.05f, -0.05f,
+		0.05f, 0.05f, 0.05f
 	};
 
-	VBO vbo = VBO(0, 0);
+	VBO vbo = VBO(vertices, sizeof(vertices));
 
 	GLuint indices[36] =
 	{
@@ -50,13 +51,17 @@ private:
 
 public:
 
+	float innerAngle, outerAngle = 0.0f;
+	glm::vec3 bottomVec = glm::vec3(0.0f);
+
 	glm::vec3 Color;
 	float Intensity = 1.0f;
 
 	std::map<int, defaultObject*>* shadersPtr;
 	Shader* shader;
 
-	Light(float size, glm::vec3 position, glm::vec3 color, float intensity, std::map<int, defaultObject*>* shaders_ptr, int shader);
+	Light(glm::vec3 position, glm::vec3 color, float intensity, std::map<int, defaultObject*>* shaders_ptr, int shader);	//point light
+	Light(glm::vec3 position, glm::vec3 color, float intensity, glm::vec3 bottom, float inner, float outer, std::map<int, defaultObject*>* shaders_ptr, int shaderProg); //spot light
 
 	void Draw() override;
 	void MAJlight();

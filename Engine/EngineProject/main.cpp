@@ -70,10 +70,10 @@ int main() {
 	//M.add_element(new Cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
 
 	//M.getCubePtr(1)->Rotate(90.0f, glm::vec3(1.0f, 1.0f, 0.0f));
-	M.add_element(new Plan(3.0f, glm::vec3(0.0f, -1.0f, -1.0f), M.getTexturePtr(4), M.getShaderPtr(0)), PLAN_TYPE);
-	M.getPlanPtr(0)->Rotate(90, glm::vec3(1.0f, 0.0f, 0.0f));
+	M.add_element(new Plan(3.0f, glm::vec3(0.0f, -1.0f, 0.0f), M.getTexturePtr(4), M.getShaderPtr(0)), PLAN_TYPE);
+	M.getPlanPtr(0)->Rotate(45, glm::vec3(1.0f, 0.0f, 0.0f));
 
-	M.add_element(new Light(0.1f, glm::vec3(0.0f, -0.5f, 0.0f), glm::vec3(1.0f), 1.0f, all[SHADER_TYPE], 1), LIGHT_TYPE);
+	M.add_element(new Light(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), 1.0f, glm::vec3(0.0f, -1.0f, 0.0f), 0.95f, 0.9f, all[SHADER_TYPE], 1), LIGHT_TYPE);
 	
 	MAJlightcolor(&all, 0);
 

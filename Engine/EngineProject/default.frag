@@ -17,9 +17,13 @@ uniform vec3 lightPos;
 uniform vec4 lightColor;
 uniform float lightIntensity;
 uniform float ambientLight;
+uniform vec3 bottomVec;
+uniform float inner;
+uniform float outer;
 uniform vec3 ownColor;
 
 vec4 pointLight(){
+
 	vec3 lightDirection = lightPos - crntPosition;
 	float lightDist = length(lightDirection);
 	lightDirection = normalize(lightDirection);
@@ -44,7 +48,36 @@ vec4 pointLight(){
 	return vec4(ownColor * (lighting + specular), 1.0f) * lightColor;
 }
 
+vec4 directionLight(){
+
+	float diffuse = max(-dot(normalize(lightPos), normal), 0.0f);
+
+	float lighting = diffuse * lightIntensity + ambientLight;
+
+	if(isTextured){
+		return texture(tex0, TexPos) * lighting * lightColor;
+	}
+	return vec4(ownColor * lighting, 1.0f) * lightColor;
+}
+
+vec4 spotLight(){
+
+	vec3 lightDirection = normalize(lightPos - crntPosition);
+
+	float angle = dot(-lightDirection, bottomVec);
+	float inten = clamp((angle - outer) / (inner - outer), 0.0f, 1.0f);
+	float dotProduct = dot(lightDirection, normal);
+	float diffuse = max(dotProduct, 0.0f);
+
+	float lighting = diffuse * inten + ambientLight;
+
+	if(isTextured){
+		return texture(tex0, TexPos) * lighting * lightColor;
+	}
+	return vec4(ownColor * lighting, 1.0f) * lightColor;
+}
+
 void main()
 {
-		FragColor = pointLight();
+		FragColor = spotLight();
 }

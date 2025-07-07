@@ -1,19 +1,12 @@
 #include "light.h"
 
-Light::Light(float size, glm::vec3 position, glm::vec3 color, float intensity, std::map<int, defaultObject*>* shaders_ptr, int shaderProg) {
+Light::Light(glm::vec3 position, glm::vec3 color, float intensity, std::map<int, defaultObject*>* shaders_ptr, int shaderProg) {
 
 	Color = color;
 	Intensity = intensity;
 	shadersPtr = shaders_ptr;
 	Light::shader = (Shader*)(*shadersPtr)[shaderProg];
 	Position = position;
-
-	for (int i = 0; i < 24; i++) {
-		vertices[i] *= size;
-	}
-
-	vao = VAO();
-	vbo = VBO(vertices, sizeof(vertices));
 
 	vao.Bind();
 	ebo.Bind();
@@ -24,7 +17,30 @@ Light::Light(float size, glm::vec3 position, glm::vec3 color, float intensity, s
 	Translate(Position);
 }
 
+Light::Light(glm::vec3 position, glm::vec3 color, float intensity, glm::vec3 bottom, float inner, float outer, std::map<int, defaultObject*>* shaders_ptr, int shaderProg) {
+
+	innerAngle = inner;
+	outerAngle = outer;
+	bottomVec = bottom;
+
+	Color = color;
+	Intensity = intensity;
+	shadersPtr = shaders_ptr;
+	Light::shader = (Shader*)(*shadersPtr)[shaderProg];
+	Position = position;
+
+	vao.Bind();
+	ebo.Bind();
+	vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, 3 * sizeof(GLfloat), (void*)0);
+	vao.Unbind();
+	ebo.Unbind();
+
+	Translate(Position);
+}
+
+
 void Light::Draw() {
+
 	shader->Activate();
 
 	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
@@ -42,6 +58,9 @@ void Light::MAJlight() {
 		glUniform4f(glGetUniformLocation(crntID, "lightColor"), Color.x, Color.y, Color.z, 1.0f);
 		glUniform3f(glGetUniformLocation(crntID, "lightPos"), Position.x, Position.y, Position.z);
 		glUniform1f(glGetUniformLocation(crntID, "lightIntensity"), Intensity);
+		glUniform3f(glGetUniformLocation(crntID, "bottomVec"), bottomVec.x, bottomVec.y, bottomVec.z);
+		glUniform1f(glGetUniformLocation(crntID, "inner"), innerAngle);
+		glUniform1f(glGetUniformLocation(crntID, "outer"), outerAngle);
 	}
 }
 

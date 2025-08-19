@@ -2,20 +2,17 @@
 #include"glad/glad.h"
 #include"stb/stb_image.h"
 #include"shaderClass.h"
-#include"defaultObject.h"
 
-class Texture: public defaultObject {
+class Texture {
 public:
 	GLuint ID;
-	GLenum type;
+	const char* type;
 	GLuint unit;
 
-	Texture* specMap = nullptr;
-
-	Texture(const char* image, GLenum type, GLuint slot, GLenum format, GLenum pixelType, Texture* specMap);
+	Texture(const char* image, const char* type, GLuint slot);
 
 	void texUnit(Shader& shader, const char* uniform, GLuint unit);
 	void Bind();
 	void Unbind();
-	void Delete() override;
+	void Delete();
 };

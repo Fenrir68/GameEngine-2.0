@@ -138,31 +138,35 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="cube.cpp" />
-    <ClCompile Include="defaultObject.cpp" />
-    <ClCompile Include="dictManager.cpp" />
     <ClCompile Include="EBO.cpp" />
+    <ClCompile Include="Element.cpp" />
     <ClCompile Include="glad.c" />
-    <ClCompile Include="light.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Plan.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Mesh_cube.cpp" />
+    <ClCompile Include="Mesh_plan.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="shaderClass.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="textureClass.cpp" />
+    <ClCompile Include="ToolBox.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="cube.h" />
-    <ClInclude Include="defaultObject.h" />
-    <ClInclude Include="dictManager.h" />
+    <ClInclude Include="Mesh_cube.h" />
     <ClInclude Include="EBO.h" />
-    <ClInclude Include="light.h" />
-    <ClInclude Include="Plan.h" />
+    <ClInclude Include="Element.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Mesh_plan.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="shaderClass.h" />
     <ClInclude Include="default.frag" />
     <ClInclude Include="textureClass.h" />
+    <ClInclude Include="ToolBox.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
   </ItemGroup>
@@ -177,6 +181,7 @@
     <Image Include="cube_tex.png" />
     <Image Include="planks.png" />
     <Image Include="planksSpec.png" />
+    <Image Include="white16x16.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

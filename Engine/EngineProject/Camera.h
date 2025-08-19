@@ -30,13 +30,13 @@ public:
 
 	glm::mat4 proj = glm::mat4(1.0f);
 	glm::mat4 view = glm::mat4(1.0f); 
-	std::map<int, defaultObject*>* shadersPtr;
+	std::map<int, Shader*>* shadersPtr;
 
 	bool firstClick = true;
 	double mouseX, mouseY;
 	float angle_limit = 5.0f;
 
-	Camera(int width, int height, glm::vec3 position, float baseFOV, float nearplane, float farplane, std::map<int, defaultObject*>* shaders_ptr);
+	Camera(int width, int height, glm::vec3 position, float baseFOV, float nearplane, float farplane, std::map<int, Shader*>* shaders_ptr);
 
 	void Matrix();
 	void BindMatCam();

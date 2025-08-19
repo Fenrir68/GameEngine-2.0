@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera(int width, int height, glm::vec3 position, float baseFOV, float nearplane, float farplane, std::map<int, defaultObject*>* shaders_ptr) {
+Camera::Camera(int width, int height, glm::vec3 position, float baseFOV, float nearplane, float farplane, std::map<int, Shader*>* shaders_ptr) {
 	Camera::windowWidth = width;
 	Camera::windowHeight = height;
 	ratioW_H = (float)(windowWidth) / windowHeight;
@@ -19,9 +19,9 @@ void Camera::Matrix() {
 }
 
 void Camera::BindMatCam() {
-	std::map<int, defaultObject*>::iterator it;
+	std::map<int, Shader*>::iterator it;
 	for (it = shadersPtr->begin(); it!=shadersPtr->end(); it++) {
-		Shader* crnt_shader_ptr = ((Shader*)(it->second));
+		Shader* crnt_shader_ptr = it->second;
 		crnt_shader_ptr->Activate();
 		glUniformMatrix4fv(glGetUniformLocation(crnt_shader_ptr->ID, "mat4Cam"), 1, GL_FALSE, glm::value_ptr(proj * view));
 		glUniform3f(glGetUniformLocation(crnt_shader_ptr->ID, "camPos"), Position.x, Position.y, Position.z);

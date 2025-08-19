@@ -1,31 +1,14 @@
-#include <iostream>
-#include <map>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include"stb/stb_image.h"
-#include"glm/glm.hpp"
 #include"glm/gtc/matrix_transform.hpp"
 #include"glm/gtc/type_ptr.hpp"
 
-#include"Camera.h"
-#include"shaderClass.h"
-#include"textureClass.h"
-#include"VAO.h"
-#include"VBO.h"
-#include"EBO.h"
-#include"cube.h"
-#include"Plan.h"
-#include"light.h"
-#include"defaultObject.h"
-#include"dictManager.h"
+#include"Model.h"
+#include"Mesh_plan.h"
+#include"Mesh_cube.h"
+#include"Light.h"
 
-void MAJlightcolor(std::map<int, std::map<int, defaultObject*>*>* dict, int light) {
-	((Light*)(*(*dict)[LIGHT_TYPE])[light])->MAJlight();
-}
-
-void MAJlightcolor(std::map<int, std::map<int, defaultObject*>*>* dict, int light, glm::vec3 newcolor) {
-	((Light*)(*(*dict)[LIGHT_TYPE])[light])->MAJlight(newcolor);
-}
+//Reprendre la video sur les model à 8:22
 
 int main() {
 	glfwInit();
@@ -52,48 +35,57 @@ int main() {
 	//bottom left -> top right
 	glViewport(0, 0, windowWidth, windowHeight);
 
-	std::map<int, std::map<int, defaultObject*>*> all;
-	dictManager M(&all);
+	std::map<int, Shader*> shader_map;
+	shader_map[0] = new Shader("default.vert", "default.frag");
+	shader_map[1] = new Shader("light.vert", "light.frag");
 
-	M.add_element(new Shader("default.vert", "default.frag"), SHADER_TYPE);
-	M.add_element(new Shader("light.vert", "light.frag"), SHADER_TYPE);
+	Texture planksTex[] = {
+		Texture("planks.png", "diffuse", 0),
+		Texture("planksSpec.png", "specular", 1)
+	};
+	std::vector<Texture> planksTexVec(planksTex, planksTex + 2);
 
-	M.add_element(new Texture("black16x16.png", GL_TEXTURE_2D, 1, GL_RGBA, GL_UNSIGNED_BYTE, nullptr), TEXTURE_TYPE);
-	M.add_element(new Texture("planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE, nullptr), TEXTURE_TYPE);
-	M.add_element(new Texture("brique.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, M.getTexturePtr(0)), TEXTURE_TYPE);
-	M.add_element(new Texture("cube_tex.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, M.getTexturePtr(0)), TEXTURE_TYPE);
-	M.add_element(new Texture("planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, M.getTexturePtr(1)), TEXTURE_TYPE);
+	Mesh_plan floor_mesh(planksTexVec);
 
-	//essayer de faire un seul shader qui gère les couleur et les texture
+	Texture cubeTex[] = {
+		Texture("cube_tex.png", "diffuse", 0),
+		Texture("white16x16.png", "specular", 1)
+	};
+	std::vector<Texture> cubeTexVec(cubeTex, cubeTex + 2);
 
-	//M.add_element(new Cube(1.0f, glm::vec3(-1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
-	//M.add_element(new Cube(1.0f, glm::vec3(1.0f, 0.0f, 0.0f), M.getTexturePtr(1), M.getShaderPtr(0)), CUBE_TYPE);
+	Mesh_cube cube_mesh(cubeTexVec);
 
-	//M.getCubePtr(1)->Rotate(90.0f, glm::vec3(1.0f, 1.0f, 0.0f));
-	M.add_element(new Plan(3.0f, glm::vec3(0.0f, -1.0f, 0.0f), M.getTexturePtr(4), M.getShaderPtr(0)), PLAN_TYPE);
-	M.getPlanPtr(0)->Rotate(45, glm::vec3(1.0f, 0.0f, 0.0f));
+	Element floor(floor_mesh, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(2.0f), shader_map[0]);
 
-	M.add_element(new Light(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), 1.0f, glm::vec3(0.0f, -1.0f, 0.0f), 0.95f, 0.9f, all[SHADER_TYPE], 1), LIGHT_TYPE);
-	
-	MAJlightcolor(&all, 0);
+	Element cube(cube_mesh, glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(1.0f), shader_map[0]);
 
-	M.printingKeys();
+	Light light(cube_mesh, glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.1f), hexaDecode("FFF"), 4.0f, &shader_map, 1);
 
-	Camera camera = Camera(windowWidth, windowHeight, glm::vec3(0.0f, 0.0f, 5.0f), 45.0f, 0.1f, 20.0f, all[SHADER_TYPE]);
+	light.MAJlight(glm::vec3(0.0f, -1.0f, 0.0f), 0.99f, 0.95f);
+
+	Camera camera = Camera(windowWidth, windowHeight, glm::vec3(0.0f, 0.0f, 5.0f), 45.0f, 0.1f, 100.0f, &shader_map);
 	camera.Matrix();
+
+	//BORDEL START --------------------------------------------------------------------------------------------------
+	
+
+	Model sword = Model("model/sword/scene.gltf");
+
+
+	//BODREL END ----------------------------------------------------------------------------------------------------
 
 	//set ambient light in all shaders
 	float ambientLight = 0.1f;
-	std::map<int, defaultObject*>::iterator shaderIt;
-	for (shaderIt = all[SHADER_TYPE]->begin(); shaderIt != all[SHADER_TYPE]->end(); shaderIt++) {
+	std::map<int, Shader*>::iterator shaderIt;
+	for (shaderIt = shader_map.begin(); shaderIt != shader_map.end(); shaderIt++) {
 		Shader* crntShaderPtr = (Shader*)(shaderIt->second);
 		crntShaderPtr->Activate();
 		glUniform1f(glGetUniformLocation(crntShaderPtr->ID, "ambientLight"), ambientLight);
 	}
 
 	//set Background color
-	float backgroundcolor[4] = { 0.07f, 0.13f, 0.17f, 1.0f };
-	glClearColor(backgroundcolor[0], backgroundcolor[1], backgroundcolor[2], backgroundcolor[3]);
+	glm::vec3 backgroundcolor = hexaDecode("033");
+	glClearColor(backgroundcolor[0], backgroundcolor[1], backgroundcolor[2], 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Swap the back buffer with the front buffer
@@ -111,20 +103,31 @@ int main() {
 		while (crntTime - prevTime < frq) { crntTime = glfwGetTime(); }
 		prevTime = crntTime;
 
-		glClearColor(backgroundcolor[0], backgroundcolor[1], backgroundcolor[2], backgroundcolor[3]);
+		glClearColor(backgroundcolor[0], backgroundcolor[1], backgroundcolor[2], 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		camera.Inputs(window);
 
-		M.drawingElement(CUBE_TYPE, LIGHT_TYPE);
+		sword.Draw(*shader_map[0]);
+		//light.Draw();
+		cube.Draw();
+		//floor.Draw();
 
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
 		glfwPollEvents();
 	};
 
-	M.deleteAll();
-
+	for (shaderIt = shader_map.begin(); shaderIt != shader_map.end(); shaderIt++) {
+		Shader* crntShaderPtr = (Shader*)(shaderIt->second);
+		crntShaderPtr->Delete();
+		glUniform1f(glGetUniformLocation(crntShaderPtr->ID, "ambientLight"), ambientLight);
+	}
+	light.Delete();
+	floor.Delete();
+	sword.Delete();
+	cube.Delete();
+	
 	glfwTerminate();
 	return 0;
 }
